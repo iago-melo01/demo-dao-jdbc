@@ -19,5 +19,7 @@ public class Program {
 
         Seller seller01 = new Seller(1, "Thiago silva", "thiagosilvacbf@gmail.com", date, 2000d, obj  );
         System.out.println(seller01);
+        Integer i = 0;
+
     }
 }
