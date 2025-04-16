@@ -14,7 +14,7 @@ Java (JDK 8 ou superior)
 MySQL Workbench instalado no computador
 MySQL Server em execução
 Biblioteca JDBC para MySQL (geralmente mysql-connector-java)
-Script de criação do banco de dados disponível na pasta database ou informado no projeto
+Script de criação do banco de dados disponível na pasta db ou informado no projeto
 Instalação e Execução
 Baixe o Projeto
 
@@ -22,7 +22,7 @@ Clone ou faça o download deste repositório para sua máquina.
 Configure o Banco de Dados
 
 Abra o MySQL Workbench.
-Execute o script SQL fornecido na pasta /database para criar as tabelas e inserir dados iniciais no banco. (AINDA VOU ADICIONAR O SCRIPT)
+Execute o script SQL fornecido na pasta /database para criar as tabelas e inserir dados iniciais no banco. 
 Edite as Configurações de Conexão com o Banco
 
 Altere as configurações de usuário, senha e nome do banco no arquivo de configuração do projeto (exemplo: db.properties ou dentro do código).
