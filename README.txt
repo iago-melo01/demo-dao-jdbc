@@ -32,7 +32,7 @@ Se estiver usando uma IDE como IntelliJ ou Eclipse, adicione o arquivo JAR do my
 Compile e Execute
 
 Compile o projeto Java.
-Execute o arquivo principal (Main.java, ou como for nomeado em seu projeto).
+Execute o arquivo principal (Main).
 Estrutura do Projeto
 src/
 |-- application/         # Classe principal e métodos utilitários

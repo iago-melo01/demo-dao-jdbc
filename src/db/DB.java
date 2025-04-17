@@ -55,7 +55,7 @@ public class DB {
     }
 
     private static Properties loadProperties() {
-        try (FileInputStream fs = new FileInputStream("C:\\Users\\ivdm0\\IdeaProjects\\untitled1\\src\\DataBaseTest03\\lib\\db03.properties")) {
+        try (FileInputStream fs = new FileInputStream("src/db/db03.properties")) {
             Properties prop = new Properties();
             prop.load(fs);
             return prop;

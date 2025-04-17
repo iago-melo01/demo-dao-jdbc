@@ -4,11 +4,11 @@ import model.dao.impl.DepartmentJDBC;
 import model.dao.impl.SellerJDBC;
 
 public class DaoFactory {
-    public SellerDAO createSellerDAO(){
+    public static SellerDAO createSellerDAO(){
         return new SellerJDBC();
     }
 
-    public DepartmentDAO createDepartmentDAO(){
+    public static DepartmentDAO createDepartmentDAO(){
         return new DepartmentJDBC();
     }
 }
