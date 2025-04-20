@@ -38,6 +38,7 @@ public class DB {
         try {
             if (statement != null) {
                 statement.close();
+                System.out.println("Statement closed");
             }
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
@@ -48,6 +49,7 @@ public class DB {
         try {
             if (resultSet != null) {
                 resultSet.close();
+                System.out.println("ResultSet closed");
             }
         } catch (SQLException e) {
             throw new DBException(e.getMessage());

@@ -5,12 +5,18 @@ import db.DBException;
 import model.dao.DepartmentDAO;
 import model.entities.Department;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 public class DepartmentJDBC implements DepartmentDAO {
+    Connection conn = null;
+
+    public DepartmentJDBC(Connection conn) {
+        this.conn = conn;
+    }
 
     @Override
     public void insert(Department obj) {

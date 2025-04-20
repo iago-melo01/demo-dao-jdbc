@@ -7,6 +7,7 @@ import model.dao.SellerDAO;
 import model.entities.Department;
 import model.entities.Seller;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +18,12 @@ import java.util.Date;
 import java.util.List;
 
 public class SellerJDBC implements SellerDAO {
+    Connection conn = null;
+
+    public SellerJDBC(Connection conn) {
+        this.conn = conn;
+    }
+
     @Override
     public void insert(Seller obj) {
 
@@ -34,10 +41,12 @@ public class SellerJDBC implements SellerDAO {
 
     @Override
     public Seller findById(Integer id) {
+        ResultSet rs = null;
+        PreparedStatement pst = null;
         try{
-            PreparedStatement pst = DB.getConnection().prepareStatement("SELECT * FROM seller WHERE Id = ?");
+            pst = conn.prepareStatement("SELECT * FROM seller WHERE Id = ?");
             pst.setInt(1, id.intValue());
-            ResultSet rs = pst.executeQuery();
+            rs = pst.executeQuery();
             DateFormat dtf = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
             Double baseSalaryWrapper= null;
             String name = null;
@@ -55,6 +64,9 @@ public class SellerJDBC implements SellerDAO {
 
         }catch(SQLException e ){
             throw new DBException(e.getMessage());
+        }finally{
+            DB.closeResultSet(rs);
+            DB.closeStatement(pst);
         }
         //| ParseException e
         //dtf.parse(rs.getString("BirthDate"))
