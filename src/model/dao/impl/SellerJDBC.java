@@ -14,14 +14,49 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class SellerJDBC implements SellerDAO {
     private Connection conn = null;
 
     public SellerJDBC(Connection conn) {
         this.conn = conn;
+    }
+
+    public List<Seller> findByDepartment(Department department){
+        ResultSet rs = null;
+        PreparedStatement pst = null;
+        try {
+            pst = conn.prepareStatement(
+                    "SELECT seller.*, department.Name AS DepName " +
+                    "FROM seller INNER JOIN department " +
+                    "ON seller.DepartmentId = department.Id " +
+                    "WHERE department.Id = ?");
+            pst.setInt(1, department.getId());
+            rs = pst.executeQuery();
+
+            List<Seller> list = new ArrayList<>();
+            Map<Integer, Department> map =  new HashMap<>(); //
+            while (rs.next()) {
+                Department departmentobj = map.get(rs.getInt("DepartmentId"));
+                if(departmentobj == null){
+                    departmentobj = instantiateDepartment(rs);
+                    map.put(departmentobj.getId(), departmentobj); // armazena dentro de um hash a referencia pra esse objeto
+                    //pra nao ficar criando um novo objeto toda vez que executar a função
+                }
+
+                    Seller obj = instantiateSeller(rs, departmentobj);
+                    list.add(obj);
+
+            }
+
+            return list;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(pst);
+        }
     }
 
     @Override
