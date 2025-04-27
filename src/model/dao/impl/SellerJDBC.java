@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SellerJDBC implements SellerDAO {
-    Connection conn = null;
+    private Connection conn = null;
 
     public SellerJDBC(Connection conn) {
         this.conn = conn;
@@ -43,33 +43,48 @@ public class SellerJDBC implements SellerDAO {
     public Seller findById(Integer id) {
         ResultSet rs = null;
         PreparedStatement pst = null;
-        try{
-            pst = conn.prepareStatement("SELECT * FROM seller WHERE Id = ?");
-            pst.setInt(1, id.intValue());
+        try {
+            pst = conn.prepareStatement("SELECT seller.*, department.Name AS DepName " +
+                    "FROM seller INNER JOIN department " +
+                    "ON seller.DepartmentId = department.Id " +
+                    "WHERE seller.Id = ?");
+            pst.setInt(1, id);
             rs = pst.executeQuery();
-            DateFormat dtf = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
-            Double baseSalaryWrapper= null;
-            String name = null;
-            String email = null;
-            Integer departmentId = null;
-            if (rs.next()){
-                baseSalaryWrapper = rs.getDouble("baseSalary");
-                name = rs.getString("Name");
-                email = rs.getString("Email");
-                departmentId = rs.getInt("DepartmentId");
+
+            if (rs.next()) {
+                Department departmentobj = instantiateDepartment(rs);
+
+                Seller obj = instantiateSeller(rs, departmentobj);
+
+                return obj;
             }
 
-
-                return new Seller(id.intValue(), name, email, new Date("04/20/2000"), baseSalaryWrapper, DaoFactory.createDepartmentDAO().findById(departmentId));
-
-        }catch(SQLException e ){
+            return null; // inacabado
+        } catch (SQLException e) {
             throw new DBException(e.getMessage());
-        }finally{
+        } finally {
             DB.closeResultSet(rs);
             DB.closeStatement(pst);
         }
         //| ParseException e
         //dtf.parse(rs.getString("BirthDate"))
+    }
+    private Department instantiateDepartment(ResultSet rs) throws SQLException{
+        Department dep = new Department();
+        dep.setId(rs.getInt("DepartmentId"));
+        dep.setName(rs.getString("DepName"));
+        return dep;
+    }
+
+    private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException{
+         Seller obj = new Seller();
+         obj.setId(rs.getInt("Id"));
+         obj.setName(rs.getString("Name"));
+         obj.setEmail(rs.getString("Email"));
+         obj.setBirthDate(rs.getDate("BirthDate"));
+         obj.setBaseSalary(rs.getDouble("BaseSalary"));
+         obj.setDepartment(dep);
+         return obj;
     }
 
     @Override

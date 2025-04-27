@@ -12,5 +12,7 @@ public class Main {
         DB.getConnection();
         Seller sellerId2 = DaoFactory.createSellerDAO().findById(6);
         System.out.println(sellerId2);
+        DB.closeConnection();
+
     }
 }
