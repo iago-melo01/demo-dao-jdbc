@@ -12,6 +12,8 @@ public class Main {
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
         DB.getConnection();
+        
+
         System.out.println("----TEST 1 Seller findByID----");
         Seller seller = DaoFactory.createSellerDAO().findById(2);
         System.out.println(seller);
@@ -20,8 +22,14 @@ public class Main {
         Department dep = new Department(2, null);
         List<Seller> sellersOfDepartment2 = DaoFactory.createSellerDAO().findByDepartment(dep);
         sellersOfDepartment2.forEach(System.out::println);
+
+
+        System.out.println("\n----TEST 3 Seller findAll----");
+        List<Seller> allSellers = DaoFactory.createSellerDAO().findAll();
+        allSellers.forEach(System.out::println);
+
         DB.closeConnection();
-        sellersOfDepartment2.forEach(System.out::println);
+
 
     }
 }
