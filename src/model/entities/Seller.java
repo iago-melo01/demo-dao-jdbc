@@ -38,13 +38,17 @@ public class Seller implements Serializable {
     }
 
     public Seller(int id, String name, String email, Date birthDate, Double baseSalary, Department department) {
+        this();
         this.id = id;
+    }
+    public Seller( String name, String email, Date birthDate, Double baseSalary, Department department) {
         this.name = name;
         this.email = email;
         this.BirthDate = birthDate;
         this.BaseSalary = baseSalary;
         this.department = department;
     }
+
     public Seller(){
 
     }

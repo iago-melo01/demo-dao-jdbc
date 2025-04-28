@@ -79,7 +79,7 @@ public class SellerJDBC implements SellerDAO {
                     obj.setId(rs.getInt(1)); // E essa tabela só tem uma coluna que é a das primary keys criadas
 
                 }
-            }else{
+            } else {
                 throw new DBException("Unexpected error! No rows affected");
             }
 
@@ -93,13 +93,51 @@ public class SellerJDBC implements SellerDAO {
     }
 
     @Override
-    public void update(Seller obj) {
+    public void update(Seller obj, Integer id) {
+        PreparedStatement pst = null;
+        try {
+            pst = conn.prepareStatement("UPDATE seller SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? WHERE Id = ?", Statement.RETURN_GENERATED_KEYS);
+            pst.setString(1, obj.getName());
+            pst.setString(2, obj.getEmail());
+            Date birthDate = new Date(obj.getBirthDate().getTime());
+            pst.setDate(3, birthDate);
+            pst.setDouble(4, obj.getBaseSalary());
+            pst.setInt(5, obj.getDepartment().getId());
+            pst.setInt(6, id);
 
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Updated seller with id = " + id);
+            } else {
+                throw new DBException("Unexpected error! No rows affected");
+            }
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(pst);
+        }
     }
 
     @Override
     public void deleteId(Integer id) {
+        PreparedStatement pst = null;
 
+        try {
+            pst = conn.prepareStatement("DELETE FROM seller WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+            pst.setInt(1, id);
+
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Deleted seller with id = " + id);
+            } else {
+                throw new DBException("Unexpected error! No rows affected");
+            }
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+
+            DB.closeStatement(pst);
+        }
     }
 
     @Override
@@ -122,15 +160,13 @@ public class SellerJDBC implements SellerDAO {
                 return obj;
             }
 
-            return null; // inacabado
+            return null;
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {
             DB.closeResultSet(rs);
             DB.closeStatement(pst);
         }
-        //| ParseException e
-        //dtf.parse(rs.getString("BirthDate"))
     }
 
     private Department instantiateDepartment(ResultSet rs) throws SQLException {
