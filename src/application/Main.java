@@ -2,6 +2,7 @@ package application;
 
 import db.DB;
 import model.dao.DaoFactory;
+import model.dao.DepartmentDAO;
 import model.dao.SellerDAO;
 import model.entities.Department;
 import model.entities.Seller;
@@ -10,7 +11,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-
+//CRUD De JDBC, As funções estao dentro das implementações (SellerJDBC e DepartmentJDBC)
+//É Necessário estar com o mysql server ligado, e estar com o banco de dados conectado no mysql workbench
+//Execute o Script SQL no banco de dados. (Localizado em src/db/database.sql
+//
 public class Main {
     public static void main(String[] args) {
         Locale.setDefault(Locale.US);
@@ -45,6 +49,11 @@ public class Main {
 
         System.out.println("\n----TEST 6 Seller update----");
         sellerDAO.update(test, 3 );
+
+        DepartmentDAO depDAO = DaoFactory.createDepartmentDAO();
+        System.out.println("----TEST 1 Department findByID----");
+
+        depDAO.insert(new Department(1, "Business"));
         DB.closeConnection();
 
 

@@ -96,7 +96,7 @@ public class SellerJDBC implements SellerDAO {
     public void update(Seller obj, Integer id) {
         PreparedStatement pst = null;
         try {
-            pst = conn.prepareStatement("UPDATE seller SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? WHERE Id = ?", Statement.RETURN_GENERATED_KEYS);
+            pst = conn.prepareStatement("UPDATE seller SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ?      WHERE Id = ?", Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, obj.getName());
             pst.setString(2, obj.getEmail());
             Date birthDate = new Date(obj.getBirthDate().getTime());
